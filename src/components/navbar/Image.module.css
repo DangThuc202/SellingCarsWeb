@@ -1,0 +1,19 @@
+.container {
+    margin-top: 15px;
+}
+
+.images {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+}
+
+.image {
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.12);
+    }
+}

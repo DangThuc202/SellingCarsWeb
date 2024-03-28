@@ -1,0 +1,117 @@
+.container {
+    background-image: url('../../img/login.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 650px;
+    margin-top: 50px;
+    display: flex;
+    text-align: center;
+    justify-content: right;
+    margin-top: 50px;
+}
+
+.out {
+    position: absolute;
+    right: 1%;
+    top: 2%;
+}
+
+.form {
+    width: 570px;
+    max-height: 600px;
+    background-color: #fff;
+    margin-top: 30px;
+    margin-right: 150px;
+    border-radius: 30px;
+
+}
+
+.info {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.parent {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    width: 100%;
+    /* gap: 20px; */
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.inputForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.button {
+    width: 100%;
+    text-align: right;
+}
+
+.btn {
+    width: 150px;
+    padding: 10px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    text-transform: capitalize;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+    }
+}
+
+.other {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.otherIcons {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.3;
+    }
+}
+
+.links {
+    display: flex;
+    justify-content: space-around;
+}
+
+.link {
+    color: blue;
+
+    &:hover {
+        cursor: pointer;
+        color: red;
+    }
+}
+
+.logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}

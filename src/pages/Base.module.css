@@ -1,0 +1,28 @@
+.container {
+    margin: 20px 40px;
+    display: flex;
+    gap: 75px;
+    position: relative;
+}
+
+.container1 {
+    align-self: flex-start;
+}
+
+.footer {
+    margin-top: 100px;
+}
+
+.system {
+    display: flex;
+    padding: 50px;
+}
+
+.left {
+    display: flex;
+    margin-right: 50px;
+}
+
+.right {
+    display: flex;
+}
