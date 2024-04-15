@@ -29,7 +29,7 @@
 .info {
     border: 1px solid #ccc;
     width: 100%;
-    height: auto;
+    min-height: 450px;
     border-radius: 2%;
     padding: 2.5rem 3rem;
     display: flex;
@@ -63,14 +63,9 @@
                 gap: 20px;
                 flex: 1;
 
-                .item {
-                    display: flex;
+                .text {
                     font-size: 18px;
-                    justify-content: space-between;
 
-                    .text {
-                        font-size: 18px;
-                    }
                 }
             }
 
@@ -80,21 +75,15 @@
                 gap: 20px;
                 flex: 1;
 
-                .item {
-                    display: flex;
+                .text {
                     font-size: 18px;
-                    justify-content: space-between;
-
-
-                    .text {
-                        font-size: 18px;
-                    }
                 }
             }
         }
     }
 
-    .decscription {
+    .description {
         font-size: 18px;
+        text-indent: 50px;
     }
 }

@@ -41,6 +41,7 @@
 
 .item {
     font-size: 18px;
+    color: black;
 
     &:hover {
         cursor: pointer;
@@ -161,4 +162,10 @@
     color: blue;
     font-style: oblique;
     text-decoration: underline;
+}
+
+.abc {
+    &:hover {
+        cursor: pointer;
+    }
 }

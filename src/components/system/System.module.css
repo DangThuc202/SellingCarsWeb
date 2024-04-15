@@ -22,6 +22,13 @@
     margin-right: 50px;
 }
 
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .list {
     display: flex;
     flex-direction: column;
@@ -30,9 +37,10 @@
     gap: 20px;
 }
 
-.title {
-    font-size: 20px;
-    font-weight: bold;
+.product {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
 .label {
@@ -46,11 +54,9 @@
 }
 
 .manage {
-    border: 1px solid red;
     display: flex;
     width: 100%;
     justify-content: center;
-    padding: 30px;
     flex-direction: column;
     gap: 50px;
 }
@@ -60,6 +66,12 @@
     font-weight: bold;
     display: flex;
     justify-content: center;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
 }
 
 .table {
@@ -77,8 +89,69 @@ th.head {
     font-weight: bold;
 }
 
+.img {
+    width: 100px;
+}
+
+.edit {
+    &:hover {
+        cursor: pointer;
+        color: blue;
+    }
+
+}
+
 .out {
     position: absolute;
     right: 1%;
     top: 2%;
+}
+
+.form {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    text-align: center;
+    gap: 50px;
+}
+
+.formTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.formList {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.formBtns {
+    display: flex;
+    gap: 50px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 10px 50px !important;
+    color: white !important;
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 5px;
+
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+    }
+}
+
+#delete {
+    background-color: red;
+}
+
+
+#update {
+    background-color: #00b700;
 }

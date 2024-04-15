@@ -2,21 +2,18 @@ import { Button, IconButton, TextField, Box } from '@mui/material'
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import * as Yup from 'yup'
-import UserServices from '../../services/UserServices'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import GoogleIcon from '@mui/icons-material/Google'
 import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined';
-// import axios from 'axios'
 import styles from "./AuthForm.module.css"
 import { useDispatch } from 'react-redux'
 import { setCurrentForm } from '../../redux/formsSlice'
 
 const Login = () =>
 {
-    const [ isLoggingIn, setIsLoggingIn ] = useState( false )
     const [ errorMessage, setErrorMessage ] = useState( '' )
     const [ showPassword, setShowPassword ] = useState( false )
     const navigate = useNavigate()
@@ -37,27 +34,6 @@ const Login = () =>
         dispatch( setCurrentForm( 'changepassword' ) );
     };
 
-    // const handleGoogleLogin = async () =>
-    // {
-    //     try
-    //     {
-    //         const googleToken = '845159881702-5qqakik71b1iajk32a7425ojahb9jcid.apps.googleusercontent.com' // Get the Google token from the Google login API
-    //         const apiResponse = await axios.post( 'http://localhost:3001/api/auth-google', {
-    //             token: googleToken // Send the Google token to your backend server
-    //         } )
-    //         if ( apiResponse.data.success )
-    //         {
-    //             console.log( 'Login successful' )
-    //         } else
-    //         {
-    //             console.log( 'Login failed' )
-    //         }
-    //     } catch ( error )
-    //     {
-    //         const message = error.response ? error.response.data.message : error.message || 'An unexpected error occurred.'
-    //         toast.error( message )
-    //     }
-    // }
     const login = useFormik( {
         initialValues: {
             username: '',
@@ -69,35 +45,51 @@ const Login = () =>
         } ),
         onSubmit: async ( values ) =>
         {
-            setIsLoggingIn( !isLoggingIn )
-            setErrorMessage( errorMessage )
-            if ( values.username === 'admin@gmail.com' && values.password === '123456' )
-            {
-                navigate( '/he-thong' )
-            } else
-                try
-                {
-                    const result = await UserServices.loginService( values.username, values.password )
-                    if ( result && result.accessToken )
-                    {
-                        toast.success( 'Đăng nhập thành công' )
+            setErrorMessage( errorMessage );
 
-                        navigate( '/' )
+            try
+            {
+                const response = await fetch( 'http://localhost/php/server/api/user/login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify( values ),
+                } );
+
+                if ( response.ok )
+                {
+                    const result = await response.json();
+                    console.log( result.userInfo );
+                    if ( result.userInfo.userId )
+                    {
+                        if ( result.userInfo.userId === 1 )
+                        {
+                            alert( "Đăng nhập thành công" );
+                            navigate( '/he-thong' );
+                        } else
+                        {
+                            alert( "Đăng nhập thành công" );
+                            navigate( '/' );
+                        }
                     } else
                     {
-                        setErrorMessage( 'Không thể nhận token từ server' )
-                        toast.error( 'Không thể nhận token từ server' )
+                        alert( "Đăng nhập thất bại" );
                     }
-                } catch ( error )
+                } else
                 {
-                    const message = error.response ? error.response.data.message : error.message || 'An unexpected error occurred.'
-                    setErrorMessage( message )
-                    toast.error( message )
-                } finally
-                {
-                    setIsLoggingIn( false )
+                    const errorMessage = await response.text();
+                    setErrorMessage( errorMessage );
+                    toast.error( errorMessage );
                 }
+            } catch ( error )
+            {
+                const message = error.message || 'Đã xảy ra lỗi không mong muốn.';
+                setErrorMessage( message );
+                toast.error( message );
+            }
         }
+
     } )
 
     return (

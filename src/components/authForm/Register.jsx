@@ -2,9 +2,7 @@ import { Button, IconButton, TextField, Box, Stack } from '@mui/material'
 import { useFormik } from 'formik'
 import { useState } from 'react'
 import * as Yup from 'yup'
-import UserServices from '../../services/UserServices'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import styles from "./AuthForm.module.css"
@@ -13,11 +11,9 @@ import { setCurrentForm } from '../../redux/formsSlice'
 
 const Register = () =>
 {
-    const [ isLoggingIn, setIsLoggingIn ] = useState( false )
     const [ errorMessage, setErrorMessage ] = useState( '' )
     const [ showPassword, setShowPassword ] = useState( false )
     const [ showConfirmPassword, setShowConfirmPassword ] = useState( false )
-    const navigate = useNavigate()
 
     const dispatch = useDispatch();
 
@@ -36,7 +32,7 @@ const Register = () =>
             username: '',
             password: '',
             confirmPassword: '',
-            firstName: '',
+            firstname: '',
             lastname: '',
             address: ''
         },
@@ -44,37 +40,56 @@ const Register = () =>
             username: Yup.string().required( 'Bạn không được để trống phần này' ),
             password: Yup.string().required( 'Bạn không được để trống phần này' ),
             confirmPassword: Yup.string().oneOf( [ Yup.ref( "password" ) ], "Xác nhận mật khẩu không chính xác" ).required( 'Bạn không được để trống phần này' ),
-            firstName: Yup.string().required( 'Bạn không được để trống phần này' ),
+            firstname: Yup.string().required( 'Bạn không được để trống phần này' ),
             lastname: Yup.string().required( 'Bạn không được để trống phần này' ),
             address: Yup.string().required( 'Bạn không được để trống phần này' ),
         } ),
         onSubmit: async ( values ) =>
         {
-            setIsLoggingIn( !isLoggingIn )
-            setErrorMessage( errorMessage )
+            setErrorMessage( errorMessage );
+
             try
             {
-                const result = await UserServices.registerService( values )
-                if ( result && result.accessToken )
+                const response = await fetch( 'http://localhost/php/server/api/user/register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify( values ),
+                } );
+
+                if ( response.ok )
                 {
-                    // Cookies.set( 'accessToken', result.accessToken )
-                    toast.success( 'Đăng nhập thành công' )
-                    navigate( '/' )
+                    const result = await response.json();
+                    if ( result.message === 'User registered successfully' )
+                    {
+                        alert( "Đăng kí thành công" );
+                        handleLoginClick();
+                    } else
+                    {
+                        alert( "Đăng kí thất bại: " + result.message );
+                    }
                 } else
                 {
-                    setErrorMessage( 'Không thể nhận token từ server' )
-                    toast.error( 'Không thể nhận token từ server' )
+                    if ( response.status === 400 )
+                    {
+                        const errorMessage = await response.text();
+                        alert( errorMessage );
+                    } else
+                    {
+                        const errorMessage = await response.text();
+                        setErrorMessage( errorMessage );
+                        toast.error( errorMessage );
+                    }
                 }
             } catch ( error )
             {
-                const message = error.response ? error.response.data.message : error.message || 'An unexpected error occurred.'
-                setErrorMessage( message )
-                toast.error( message )
-            } finally
-            {
-                setIsLoggingIn( false )
+                const message = error.message || 'An unexpected error occurred.';
+                setErrorMessage( message );
+                toast.error( message );
             }
         }
+
     } )
 
     return (
@@ -84,7 +99,7 @@ const Register = () =>
                 <Stack spacing={2}>
                     <TextField
                         type="text"
-                        placeholder="Tài khoản"
+                        placeholder="Tài khoản (tối đa 20 kí tự)"
                         name="username"
                         fullWidth
                         value={register.values.username}
@@ -132,17 +147,17 @@ const Register = () =>
                         <TextField
                             type="text"
                             placeholder="Họ tên lót"
-                            name="firstName"
+                            name="firstname"
                             fullWidth
-                            value={register.values.firstName}
+                            value={register.values.firstname}
                             onChange={register.handleChange}
-                            error={register.touched.firstName && Boolean( register.errors.firstName )}
-                            helperText={register.touched.firstName && register.errors.firstName}
+                            error={register.touched.firstname && Boolean( register.errors.firstname )}
+                            helperText={register.touched.firstname && register.errors.firstname}
                         />
                         <TextField
                             type="text"
                             placeholder="Tên"
-                            name="lastName"
+                            name="lastname"
                             fullWidth
                             value={register.values.lastname}
                             onChange={register.handleChange}

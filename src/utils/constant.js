@@ -4,5 +4,6 @@ export const path = {
     REGISTER: '/dang-ki',
     SYSTEM: '/he-thong',
     POST: '/dang-tin',
-    ABC: '/abc'
+    PRODUCT_DETAIL: '/san-pham/:productId',
+    INTRODUCE: '/gioi-thieu'
 }

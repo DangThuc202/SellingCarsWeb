@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './Navbar.module.css'
 import logo from '../../img/logo.webp'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -14,7 +13,7 @@ const Navbar = () =>
 
   const cars = [ "Toyota", "Volkswagen", "Honda", "Huyndai", "Ford", "Nissan", "Kia", "Chevrolet", "Mercedez - Benz", "BMW" ]
   const countries = [ "Mỹ", "Nhật Bản", "Pháp", "Đức" ]
-  const prices = [ `Dưới 500 triệu`, "Từ 500 - 700 triệu", "Từ 700 - 1 tỷ", "Trên 1 tỷ" ]
+  const prices = [ `Dưới 22,000$`, "Từ 22,000$ - 30,000$", "Từ 30,000$ - 50,000$", "Trên 50,000$" ]
 
   return (
     <div className={styles.container}>
@@ -48,7 +47,7 @@ const Navbar = () =>
               </div>
             </div>
           </div>
-          <div className={styles.item}> Giới thiệu </div>
+          <Link to={path.INTRODUCE} className={styles.item}> Giới thiệu </Link>
           <div className={styles.item}> Tin tức </div>
           <div className={styles.item}> Hỗ trợ khách hàng </div>
         </div>
@@ -67,10 +66,6 @@ const Navbar = () =>
             <PersonIcon className={styles.icon} /> ĐĂNG NHẬP
           </button>
         </Link>
-        {/* <div className={styles.isLogined}>
-          Xin chào
-          <Link to='' className={styles.logined}>DangHoangThuc@gmail.com</Link>
-        </div> */}
       </div>
     </div >
   )

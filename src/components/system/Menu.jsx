@@ -24,10 +24,10 @@ const Menu = () =>
                 <div className={styles.title}>Hệ thống quản lý</div>
                 <div className={styles.list}>
                     <div className={styles.product}>
-                        <div onClick={handleProductManageClick} className={styles.label}>Quản lý sản phẩm</div>
+                        <div onClick={handleProductManageClick} className={styles.label}>Sản phẩm</div>
                     </div>
                     <div className={styles.product}>
-                        <div onClick={handleUserManageClick} className={styles.label}>Quản lý người dùng</div>
+                        <div onClick={handleUserManageClick} className={styles.label}>Người dùng</div>
                     </div>
                 </div>
             </div>

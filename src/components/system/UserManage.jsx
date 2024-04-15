@@ -1,60 +1,32 @@
 import React from 'react'
 import styles from "./System.module.css"
-// import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { TableCell, TableRow, TableBody, Paper, Table, TableHead, TableContainer } from '@mui/material'
 
 
 const UserManage = () =>
 {
 
-    // const [ users, setUsers ] = useState( [] );
-
     const headers = [ "Mã số", "Tài khoản", "Họ", "Tên", "Địa chỉ", ]
-    const users = [
+
+    const [ users, setUsers ] = useState( null )
+
+    useEffect( () =>
+    {
+        const fetchData = async () =>
         {
-            id: 1,
-            username: "thuc@gmail.com",
-            firstName: "Đặng Hoàng",
-            lastName: "Thức",
-            address: "123 đường Nguyễn Văn A phường Nguyễn văn B Quận Nam Từ Liên Tp HCM"
-
-        },
-        {
-            id: 2,
-            username: "thuc@gmail.com",
-            firstName: "Đặng Hoàng",
-            lastName: "Thức",
-            address: "123 đường Nguyễn Văn A phường Nguyễn văn B Quận Nam Từ Liên Tp HCM"
-
-        },
-        {
-            id: 3,
-            username: "thuc@gmail.com",
-            firstName: "Đặng Hoàng",
-            lastName: "Thức",
-            address: "123 đường Nguyễn Văn A phường Nguyễn văn B Quận Nam Từ Liên Tp HCM"
-
-        },
-    ]
-
-
-    // useEffect( () =>
-    // {
-    //     async function fetchUsers ()
-    //     {
-    //         try
-    //         {
-    //             const response = await fetch( 'https://jsonplaceholder.typicode.com/users' ); // Thay URL API thực tế vào đây
-    //             const data = await response.json();
-    //             setUsers( data ); // Giả sử dữ liệu trả về là một mảng các đối tượng user
-    //         } catch ( error )
-    //         {
-    //             console.error( 'Error fetching users:', error );
-    //         }
-    //     }
-
-    //     fetchUsers();
-    // }, [] );
+            try
+            {
+                const response = await fetch( 'http://localhost/php/server/api/user/read.php' );
+                const jsonData = await response.json();
+                setUsers( jsonData );
+            } catch ( error )
+            {
+                console.error( 'Error fetching data:', error );
+            }
+        };
+        fetchData();
+    }, [] );
 
     return (
         <div className={styles.parent}>
@@ -70,23 +42,24 @@ const UserManage = () =>
                                     ) )}
                                 </TableRow>
                             </TableHead>
-                            <TableBody className={styles.table}>
-                                {users.map( ( user ) => (
-                                    <TableRow
-                                        key={user.id}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {user.id}
-                                        </TableCell>
-                                        <TableCell align="center">{user.username}</TableCell>
-                                        <TableCell align="center">{user.firstName}</TableCell>
-                                        <TableCell align="center">{user.lastName}</TableCell>
-                                        <TableCell align="center">{user.address}</TableCell>
-
-                                    </TableRow>
-                                ) )}
-                            </TableBody>
+                            {users && users.length > 0 && (
+                                <TableBody className={styles.table}>
+                                    {users.map( ( user ) => (
+                                        <TableRow
+                                            key={user.userId}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row" align='center'>
+                                                {user.userId}
+                                            </TableCell>
+                                            <TableCell align="center">{user.username}</TableCell>
+                                            <TableCell align="center">{user.firstname}</TableCell>
+                                            <TableCell align="center">{user.lastname}</TableCell>
+                                            <TableCell align="center">{user.address}</TableCell>
+                                        </TableRow>
+                                    ) )}
+                                </TableBody>
+                            )}
                         </Table>
                     </TableContainer>
                 </div>

@@ -1,73 +1,64 @@
 import React from 'react'
 import styles from "./System.module.css"
-// import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { TableCell, TableRow, TableBody, Paper, Table, TableHead, TableContainer } from '@mui/material'
-
+import EditIcon from '@mui/icons-material/Edit';
+import UpdateForm from './UpdateForm';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ProductManage = () =>
 {
 
-    // const [ users, setUsers ] = useState( [] );
+    const [ selectedProduct, setSelectedProduct ] = useState( null );
+    const [ products, setProducts ] = useState( null )
 
-    const headers = [ "Mã số", "Hãng xe", "Xuất xứ", "Chỗ ngồi", "Hộp số", "Nhiên liệu", "Màu sắc", "Chiều ngang", "Chiều cao", "Trọng lượng" ]
-    const cars = [
+    const headers = [ "Mã số", "Hãng xe", "Xuất xứ", "Giá ($)", "Màu", "Ngang (cm)", "Cao (cm)", "Nặng (kg)", "Hình" ]
+
+    useEffect( () =>
+    {
+        const fetchData = async () =>
         {
-            id: 1,
-            hangxe: "Mercedez-Ben",
-            xuatxu: "Nhật Bàn",
-            chongoi: 36,
-            hopso: "Tự động",
-            nhienlieu: "Xăng",
-            mausac: "Trắng",
-            chieungang: "200cm",
-            chieucao: "100cm",
-            trongluong: "500kg",
-        },
+            try
+            {
+                const response = await fetch( 'http://localhost/php/server/api/product/read.php' );
+                const jsonData = await response.json();
+                setProducts( jsonData );
+            } catch ( error )
+            {
+                console.error( 'Error fetching data:', error );
+            }
+        };
+        fetchData();
+    }, [] );
+
+    const handleDeleteClick = async ( productId ) =>
+    {
+        try
         {
-            id: 2,
-            hangxe: "Volkswagen",
-            xuatxu: "Nhật Bàn",
-            chongoi: 36,
-            hopso: "Tự động",
-            nhienlieu: "Xăng",
-            mausac: "Trắng",
-            chieungang: "200cm",
-            chieucao: "100cm",
-            trongluong: "500kg",
-        },
+            const response = await fetch( `http://localhost/php/server/api/product/delete.php?id=${ productId }`, {
+                method: 'DELETE',
+            } );
+            if ( !response.ok )
+            {
+                throw new Error( 'Không thể xóa sản phẩm' );
+            }
+            else
+            {
+                alert( "Xóa sản phẩm thành công !" )
+            }
+            const updatedProducts = products.filter( product => product.productId !== productId );
+            setProducts( updatedProducts );
+        } catch ( error )
         {
-            id: 3,
-            hangxe: "Mercedez-Ben",
-            xuatxu: "Nhật Bàn",
-            chongoi: 36,
-            hopso: "Tự động",
-            nhienlieu: "Xăng",
-            mausac: "Trắng",
-            chieungang: "200cm",
-            chieucao: "100cm",
-            trongluong: "500kg",
+            console.error( 'Lỗi khi xóa sản phẩm:', error );
         }
+    };
 
-    ]
-
-
-    // useEffect( () =>
-    // {
-    //     async function fetchUsers ()
-    //     {
-    //         try
-    //         {
-    //             const response = await fetch( 'https://jsonplaceholder.typicode.com/users' ); // Thay URL API thực tế vào đây
-    //             const data = await response.json();
-    //             setUsers( data ); // Giả sử dữ liệu trả về là một mảng các đối tượng user
-    //         } catch ( error )
-    //         {
-    //             console.error( 'Error fetching users:', error );
-    //         }
-    //     }
-
-    //     fetchUsers();
-    // }, [] );
+    const handleEditClick = ( product ) =>
+    {
+        setSelectedProduct( product );
+        console.log( product );
+    };
 
     return (
         <div className={styles.parent}>
@@ -83,29 +74,34 @@ const ProductManage = () =>
                                     ) )}
                                 </TableRow>
                             </TableHead>
-                            <TableBody className={styles.table}>
-                                {cars.map( ( car ) => (
-                                    <TableRow
-                                        key={car.id}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row" align='center'>
-                                            {car.id}
-                                        </TableCell>
-                                        <TableCell align="center">{car.hangxe}</TableCell>
-                                        <TableCell align="center">{car.xuatxu}</TableCell>
-                                        <TableCell align="center">{car.chongoi}</TableCell>
-                                        <TableCell align="center">{car.hopso}</TableCell>
-                                        <TableCell align="center">{car.nhienlieu}</TableCell>
-                                        <TableCell align="center">{car.mausac}</TableCell>
-                                        <TableCell align="center">{car.chieungang}</TableCell>
-                                        <TableCell align="center">{car.chieucao}</TableCell>
-                                        <TableCell align="center">{car.trongluong}</TableCell>
-                                    </TableRow>
-                                ) )}
-                            </TableBody>
+                            {products && products.length > 0 && (
+                                <TableBody className={styles.table}>
+                                    {products.map( ( product ) => (
+                                        <TableRow
+                                            key={product.productId}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row" align='center'>
+                                                {product.productId}
+                                            </TableCell>
+                                            <TableCell align="center">{product.name}</TableCell>
+                                            <TableCell align="center">{product.origin}</TableCell>
+                                            <TableCell align="center">{product.price}</TableCell>
+                                            <TableCell align="center">{product.color}</TableCell>
+                                            <TableCell align="center">{product.width}</TableCell>
+                                            <TableCell align="center">{product.height}</TableCell>
+                                            <TableCell align="center">{product.weight}</TableCell>
+                                            <TableCell align="center"><img alt='' src={product.image} className={styles.img} /></TableCell>
+                                            <TableCell align="center"><EditIcon onClick={() => handleEditClick( product )} className={styles.edit} /></TableCell>
+                                            <TableCell align="center"><DeleteIcon onClick={() => handleDeleteClick( product.productId )} className={styles.edit} /></TableCell>
+                                        </TableRow>
+                                    ) )}
+                                </TableBody>
+                            )}
                         </Table>
                     </TableContainer>
+                    {/* {selectedProduct && <UpdateForm />} */}
+                    <UpdateForm product={selectedProduct} />
                 </div>
             </div>
         </div>

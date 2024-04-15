@@ -1,7 +1,7 @@
 .container {
     width: 100%;
     position: relative;
-    /* background-color: red; */
+    margin-bottom: 50px;
 }
 
 .list {
@@ -21,11 +21,17 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    text-decoration: none;
+    color: black;
 
     &:hover {
         cursor: pointer;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
+}
+
+.imgItem {
+    border-radius: 20px 20px 0 0;
 }
 
 

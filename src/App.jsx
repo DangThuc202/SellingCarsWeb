@@ -5,6 +5,7 @@ import { HomePage } from "./pages/HomePage"
 import AuthModal from "./components/authForm/AuthModal"
 import DetailPage from "./pages/DetailPage"
 import SystemPage from "./pages/SystemPage"
+import IntroducePage from "./pages/IntroducePage"
 
 const App = () =>
 {
@@ -14,8 +15,9 @@ const App = () =>
         <Route path="/">
           <Route index path={path.HOME} exact element={<HomePage />} />
           <Route path={path.LOGIN} element={<AuthModal />} />
-          <Route path={path.ABC} element={<DetailPage />} />
+          <Route path={path.PRODUCT_DETAIL} element={<DetailPage />} />
           <Route path={path.SYSTEM} element={<SystemPage />} />
+          <Route path={path.INTRODUCE} element={<IntroducePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

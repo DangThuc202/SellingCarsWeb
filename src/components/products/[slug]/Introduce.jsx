@@ -1,46 +1,58 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styles from "./Details.module.css"
 
 const Introduce = () =>
 {
+    const { productId } = useParams();
+    const [ product, setProduct ] = useState( null );
 
-    const leftItems = [ "Hãng xe", "Xuất xứ", "Chỗ ngồi", "Hộp số", "Nhiên liệu", "Hệ thống phun xăng" ]
-    const rightItems = [ "Màu sắc", "Chiều ngang", "Chiều cao", "Trọng lượng không tải", "Quà tặng" ]
-    const test = [ "abc" ]
+    useEffect( () =>
+    {
+        const fetchProductById = async () =>
+        {
+            try
+            {
+                const response = await fetch( `http://localhost/php/server/api/product/getById.php?id=${ productId }` );
+                const data = await response.json();
+                setProduct( data );
+            } catch ( error )
+            {
+                console.error( 'Error fetching product:', error );
+            }
+        };
+
+        fetchProductById();
+    }, [ productId ] );
 
     return (
-        <div className={styles.parent}>
-            <div className={styles.info}>
-                <div className={styles.title}>Xe Toyota ABCXYZ</div>
-                <div className={styles.price}>123.000.000 VND</div>
-                <div className={styles.list}>
-                    <div className={styles.items}>
-                        <div className={styles.itemsLeft}>
-                            {leftItems.map( ( leftItem, index ) => (
-                                <div className={styles.item} key={index}>{leftItem}
-                                    {test.map( ( test1, index ) => ( <div className={styles.text} key={index}>{test1}</div> ) )}
-                                </div>
-                            ) )}
-                        </div>
-                        <div className={styles.itemsRight}>
-                            {rightItems.map( ( rightItem, index ) => (
-                                <div className={styles.item} key={index}>{rightItem}
-                                    {test.map( ( test1, index ) => ( <div className={styles.text} key={index}>{test1}</div> ) )}
-                                </div>
-                            ) )}
+        <div>
+            {product ? (
+                <div className={styles.info}>
+                    <div className={styles.title}>Xe {product.name}</div>
+                    <div className={styles.price}>{product.price} $</div>
+                    <div className={styles.list}>
+                        <div className={styles.items}>
+                            <div className={styles.itemsLeft}>
+                                <div className={styles.text}><strong>Hãng xe :</strong> {product.name}</div>
+                                <div className={styles.text}><strong>Xuất xứ :</strong> {product.origin}</div>
+                                <div className={styles.text}><strong>Màu sắc :</strong> {product.color}</div>
+                            </div>
+                            <div className={styles.itemsRight}>
+                                <div className={styles.text}><strong>Chiều ngang :</strong> {product.width} (cm)</div>
+                                <div className={styles.text}><strong>Chiều cao &emsp;:</strong> {product.height} (cm)</div>
+                                <div className={styles.text}><strong>Trọng lượng :</strong> {product.weight} (kg)</div>
+                            </div>
+
                         </div>
                     </div>
+                    <div className={styles.description}>{product.description}</div>
                 </div>
-                <div className={styles.decscription}>
-                    Xe MG ZS Luxury, 1 chủ từ đầu đăng kí tháng 11/2022 odo chuẩn, cam kết không lỗi nhỏ, không trầy xước, nội ngoại thất như mới.
-                    Đã được kiểm tra qua 176 hạng mục chính hãng, có chứng nhận chất lượng xe đã qua sử dụng.
-                    Hỗ trợ đăng kí sang tên toàn quốc.
-                    Bảo hành chính hãng 5 năm không giới hạn km.
-                    Bảo dưỡng đầy đủ.Phụ kiện sẵn full xe.
-                </div>
-            </div>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default Introduce

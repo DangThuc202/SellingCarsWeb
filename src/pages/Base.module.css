@@ -26,3 +26,7 @@
 .right {
     display: flex;
 }
+
+.introduce {
+    padding: 100px 100px;
+}
